@@ -1,24 +1,26 @@
+import java.util.*;
+
 /**
  * Buddy
  */
 public class Buddy {
-    private Array<Int> phoneNumbers;
+    private ArrayList<Integer> phoneNumbers;
     private String name;
     private String address;
     private String relation;
 
-    public Buddy(Array<Int> phoneNumbers, String name, String address, String relation) {
+    public Buddy(ArrayList<Integer> phoneNumbers, String name, String address, String relation) {
         this.phoneNumbers = phoneNumbers;
         this.name = name;
         this.address = address;
         this.relation = relation;
     }
 
-    public Array<Int> getPhoneNumbers() {
+    public ArrayList<Integer> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void setPhoneNumbers(Array<Int> phoneNumbers) {
+    public void setPhoneNumbers(ArrayList<Integer> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 
