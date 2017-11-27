@@ -22,6 +22,10 @@ public class AddressBook {
         return String.join("\n", getBuddies().stream().map(Object::toString).collect(Collectors.toList()));
     }
 
+    public String export() {
+        return toString();
+    }
+
     public int size() {
         return buddies.size();
     }

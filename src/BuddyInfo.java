@@ -22,6 +22,24 @@ public class BuddyInfo implements EditInterface {
         this.relation = relation;
     }
 
+    public static BuddyInfo importMethod(String thing) {
+        int i = 0;
+        String name = "";
+        String address = "";
+        String relation = "";
+        String age = "";
+        for (String str: thing.split("\\$")) {
+            switch(i) {
+                case 0:
+                    name = str;
+                case 1:
+                    address = str;
+            }
+            i++;
+        }
+        return new BuddyInfo(name, address);
+    }
+
     public BuddyInfo(String name, String address) {
         this.name = name;
         this.address = address;
@@ -39,9 +57,9 @@ public class BuddyInfo implements EditInterface {
     }
 
     public String toString() {
-        return "name: " + this.name + "\n"
-                + "address: " + this.address + "\n"
-                + (this.relation != null ? "relation: " + this.relation + "\n" : "")
+        return "name: " + this.name + "$"
+                + "address: " + this.address + "$"
+                + (this.relation != null ? "relation: " + this.relation + "$" : "")
                 + (this.phoneNumbers != null ? "phone numbers:" + String.join(",", phoneNumbers.stream().map(Object::toString).collect(Collectors.toList())) : "");
     }
 
