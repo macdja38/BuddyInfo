@@ -23,7 +23,7 @@ class BuddyInfoTest {
     void testSetPhoneNumbers() {
         ArrayList<Integer> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(1234567);
-        BuddyInfo buddyInfo = new BuddyInfo(phoneNumbers, "name", "address", "relation");
+        BuddyInfo buddyInfo = new BuddyInfo(phoneNumbers, "name", "address", "relationship");
         assertArrayEquals(phoneNumbers.toArray(), buddyInfo.getPhoneNumbers().toArray());
         ArrayList<Integer> alternateNumbers = new ArrayList<>();
         alternateNumbers.add(987654321);
