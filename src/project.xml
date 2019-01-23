@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <pomVersion>3</pomVersion>
+    <id>buddyinfo.model.AddressBook</id>
+    <name>Address book</name>
+    <currentVersion>1.0</currentVersion>
+    <organization>
+        <name>Adress bookkk</name>
+        <url>http://localhost/notavailable</url>
+        <logo>http://maven.apache.org/images/jakarta-logo-blue.gif</logo>
+    </organization>
+    <inceptionYear>2005</inceptionYear>
+    <package>todo</package>
+    <logo>http://maven.apache.org/images/maven.jpg</logo>
+    <description>A To Do List</description>
+    <shortDescription>A To Do List</shortDescription>
+    <url/>
+    <issueTrackingUrl/>
+    <siteAddress/>
+    <siteDirectory/>
+    <distributionDirectory>/notavailable/</distributionDirectory>
+    <repository>
+        <connection/>
+        <url/>
+    </repository>
+    <mailingLists/>
+    <developers/>
+    <dependencies>
+        <dependency>
+            <groupId>springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <nagEmailAddress/>
+        <sourceDirectory>src</sourceDirectory>
+        <unitTestSourceDirectory/>
+        <unitTest/>
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

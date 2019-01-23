@@ -1,4 +1,0 @@
-name: lol
-address: cat
-relation: friend
-phone numbers:

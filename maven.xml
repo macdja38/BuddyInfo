@@ -1,0 +1,18 @@
+<project default="test" xmlns:m="maven" xmlns:ant="jelly:ant">
+
+    <goal name="run">
+        <ant:path id="run.classpath" >
+            <ant:pathelement path="${maven.test.dest}"/>
+            <ant:pathelement path="${maven.build.dest}"/>
+            <ant:path refid="maven.dependency.classpath"/>
+        </ant:path>
+
+        <attainGoal name="java:compile"/>
+        <attainGoal name="java:jar-resources"/>
+
+        <ant:java classname="todo.ToDo" fork="true">
+            <ant:classpath refid="run.classpath"/>
+        </ant:java>
+    </goal>
+
+</project>
