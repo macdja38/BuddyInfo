@@ -1,19 +1,12 @@
-package buddyinfo;
+package buddyinfo.model;
 
 import buddyinfo.model.AddressBook;
 import buddyinfo.model.BuddyInfo;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
 public class AddressBookTest {
     @Test
@@ -44,7 +37,7 @@ public class AddressBookTest {
     }
 
     @Test
-    void addBuddy() {
+    public void addBuddy() {
         AddressBook addressBook = new AddressBook();
         BuddyInfo buddyInfo = new BuddyInfo("Fred", "Flinstone");
         addressBook.add(buddyInfo);
@@ -52,7 +45,7 @@ public class AddressBookTest {
     }
 
     @Test
-    void removeBuddy() {
+    public void removeBuddy() {
         AddressBook addressBook = new AddressBook();
         BuddyInfo buddyInfo = new BuddyInfo("Fred", "Flinstone");
         assertEquals(0, addressBook.getBuddies().size());
