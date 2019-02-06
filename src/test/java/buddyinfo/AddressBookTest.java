@@ -1,3 +1,5 @@
+package buddyinfo;
+
 import buddyinfo.model.AddressBook;
 import buddyinfo.model.BuddyInfo;
 import org.junit.jupiter.api.Test;
