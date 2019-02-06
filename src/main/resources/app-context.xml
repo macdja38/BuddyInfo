@@ -2,12 +2,6 @@
         <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
                 "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-    <bean id="view" class="buddyinfo.view.View" init-method="init">
-        <property name="controller">
-            <ref bean="controller"/>
-        </property>
-    </bean>
-    <bean id="controller" class="buddyinfo.controller.Controller" init-method="init">
-        <constructor-arg ref="view"/>
+    <bean id="controller" class="buddyinfo.controller.Controller">
     </bean>
 </beans>
