@@ -36,13 +36,18 @@ public class Controller {
 
     }
 
+    private Sort getSort() {
+        List<String> sorts = new ArrayList<>();
+        sorts.add("name");
+        return new Sort(Sort.Direction.ASC, sorts);
+    }
+
     @GetMapping(value = "/ui", produces = "text/html")
     public String getUI(@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
         Stream<BuddyInfo> buddies;
-        List<String> sorts = new ArrayList<>();
-        sorts.add("name");
+
         if (name.equals("")) {
-            buddies = StreamSupport.stream(buddyInfoRepository.findAll(new Sort(Sort.Direction.ASC, sorts)).spliterator(), false);
+            buddies = StreamSupport.stream(buddyInfoRepository.findAll(getSort()).spliterator(), false);
         } else {
             buddies = buddyInfoRepository.findByName(name).stream();
         }
@@ -59,7 +64,7 @@ public class Controller {
 
         ret += "<br>";
 
-        ret += "<form method=\"post\" action=\"/\" target=\"_blank\">" +
+        ret += "<form id=\"createForm\" method=\"post\" action=\"/\" target=\"_blank\">" +
                 "<h2>Create Buddy</h2>" +
 
                 "<label for=\"name\">Name </label>" +
@@ -71,7 +76,7 @@ public class Controller {
                 "<input id=\"saveForm\" class=\"button_text\" type=\"submit\" name=\"submit\" value=\"Submit\">" +
                 "</form>";
 
-        ret += "<form method=\"get\" action=\"/ui\" target=\"_self\">" +
+        ret += "<form id=\"filterForm\" method=\"get\" action=\"/ui\" target=\"_self\">" +
                 "<h2>Filter Buddies</h2>" +
 
                 "<label for=\"filter_name\">Name </label>" +
@@ -81,19 +86,104 @@ public class Controller {
                 "</form>";
 
         ret += "</body>";
+        ret += "<script>" +
+                "function addBuddy(name, address) {\n" +
+                "    return new Promise((resolve) => {\n" +
+                "        let data = null;\n" +
+                "\n" +
+                "        const xhr = new XMLHttpRequest();\n" +
+                "        xhr.withCredentials = true;\n" +
+                "\n" +
+                "        xhr.addEventListener('readystatechange', function () {\n" +
+                "            if (this.readyState === 4) {\n" +
+                "                console.log(this.responseText);\n" +
+                "                resolve(JSON.parse(this.responseText));\n" +
+                "            }\n" +
+                "        });\n" +
+                "\n" +
+                "        xhr.open('POST', `http://localhost:8090?name=${name}&address=${encodeURIComponent(address)}`);\n" +
+                "        xhr.setRequestHeader('cache-control', 'no-cache');\n" +
+                "\n" +
+                "        xhr.send(data);\n" +
+                "    })\n" +
+                "}\n" +
+                "\n" +
+                "function getBuddies(name) {\n" +
+                "    return new Promise(resolve => {\n" +
+                "        var data = null;\n" +
+                "\n" +
+                "        var xhr = new XMLHttpRequest();\n" +
+                "        xhr.withCredentials = true;\n" +
+                "\n" +
+                "        xhr.addEventListener('readystatechange', function () {\n" +
+                "            if (this.readyState === 4) {\n" +
+                "                console.log(this.responseText);\n" +
+                "                resolve(JSON.parse(this.responseText));\n" +
+                "            }\n" +
+                "        });\n" +
+                "\n" +
+                "        xhr.open('GET', `http://localhost:8090?name=${name}`);\n" +
+                "        xhr.setRequestHeader('cache-control', 'no-cache');\n" +
+                "\n" +
+                "        xhr.send(data);\n" +
+                "    })\n" +
+                "}\n" +
+                "\n" +
+                "function createBuddyElement(buddyInfo) {\n" +
+                "    const buddyElement = document.createElement('p');\n" +
+                "    buddyElement.innerText = `${buddyInfo.name} - ${buddyInfo.address}`;\n" +
+                "    return buddyElement;\n" +
+                "}\n" +
+                "\n" +
+                "document.getElementById('createForm').addEventListener('submit', function (event) {\n" +
+                "    const name = document.getElementById('name').value;\n" +
+                "    const address = document.getElementById('address').value;\n" +
+                "\n" +
+                "    event.preventDefault();\n" +
+                "    addBuddy(name, address)\n" +
+                "        .then(([newBuddy]) => {\n" +
+                "            const buddyElement = createBuddyElement(newBuddy);\n" +
+                "            const buddiesElement = document.getElementById('buddies');\n" +
+                "            buddiesElement.appendChild(buddyElement);\n" +
+                "        })\n" +
+                "\n" +
+                "}, false);\n" +
+                "\n" +
+                "document.getElementById('filterForm').addEventListener('submit', function (event) {\n" +
+                "    const name = document.getElementById('filter_name').value;\n" +
+                "\n" +
+                "    event.preventDefault();\n" +
+                "    getBuddies(name)\n" +
+                "        .then((newBuddies) => {\n" +
+                "            const buddiesElement = document.getElementById('buddies');\n" +
+                "            buddiesElement.innerText = '';\n" +
+                "\n" +
+                "            newBuddies.map(createBuddyElement).forEach(b => buddiesElement.appendChild(b))\n" +
+                "        })\n" +
+                "\n" +
+                "}, false);\n" +
+                "</script>";
         ret += "</html>";
 
         return ret;
     }
 
     @GetMapping(value = "/", produces = "application/json")
-    public List<BuddyInfo> getBuddy(@RequestParam(name = "name", required = false, defaultValue = "Fred") String name, Model model) {
-        buddyInfoRepository.findByName(name);
-        return buddyInfoRepository.findByName(name);
+    public List<BuddyInfo> getBuddy(@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
+        List<BuddyInfo> buddies;
+
+        if (name.equals("")) {
+            buddies = new ArrayList<>();
+            buddyInfoRepository.findAll(getSort()).forEach(buddies::add);
+        } else {
+            buddies = buddyInfoRepository.findByName(name);
+        }
+
+        return buddies;
     }
 
     @PostMapping(value = "/", produces = "application/json")
-    public List<BuddyInfo> addBuddy(@RequestParam(name = "name", required = false, defaultValue = "Fred") String name, @RequestParam(name = "address", required = false, defaultValue = "342 road") String address, Model model) {
+    public List<BuddyInfo> addBuddy(@RequestParam(name = "name", required = false, defaultValue = "") String name, @RequestParam(name = "address", required = false, defaultValue = "342 road") String address, Model model) {
         buddyInfoRepository.save(new BuddyInfo(name, address));
         return buddyInfoRepository.findByName(name);
     }
